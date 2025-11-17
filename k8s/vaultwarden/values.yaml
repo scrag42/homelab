@@ -1,0 +1,35 @@
+replicaCount: 1
+
+image:
+  repository: vaultwarden/server
+  pullPolicy: IfNotPresent
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  hosts:
+    - host: bw.wheelerlab.dev
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+   - secretName: vaultwarden-tls
+     hosts:
+       - bw.wheelerlab.dev
+
+persistence:
+  enabled: true
+  size: 1Gi
+  storageClassName: ""
+  accessMode: ReadWriteOnce
+  mountPath: /data
+
+env:
+  ADMIN_TOKEN: ""

@@ -1,0 +1,25 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "vaultwarden.fullname" $ }}
+  labels:
+    {{- include "vaultwarden.labels" $ | nindent 4 }}
+  annotations:
+    {{- toYaml $.Values.ingress.annotations | nindent 4 }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    {{- range .Values.ingress.hosts }}
+    - match: Host(`{{ .host }}`)
+      kind: Rule
+      services:
+        - name: {{ include "vaultwarden.fullname" $ }}
+          port: {{ $.Values.service.port }}
+    {{- end }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    secretName: {{ .secretName }}
+    {{- end }}
+{{- end }}

@@ -1,0 +1,23 @@
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`traefik-dashboard.wheelerlab.dev`)
+    entryPoints:
+      - websecure
+    tls:
+      secretName: traefik-dashboard-cert-secret
+providers:
+  kubernetesGateway:
+    enabled: true
+gateway:
+  listeners:
+    web:
+      namespacePolicy:
+        from: All
+ports:
+  web:
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true

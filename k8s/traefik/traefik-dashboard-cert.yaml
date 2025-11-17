@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: traefik-dashboard-certificate
+  namespace: traefik
+spec:
+  # Secret names are always required.
+  secretName: traefik-dashboard-cert-secret
+  issuerRef:
+    name: cloudflare-clusterissuer
+    kind: ClusterIssuer
+  dnsNames:
+    - traefik-dashboard.wheelerlab.dev
