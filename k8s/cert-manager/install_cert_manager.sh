@@ -1,3 +1,4 @@
+#!/bin/bash
 helm install \
   cert-manager oci://quay.io/jetstack/charts/cert-manager \
   --version v1.19.1 \
