@@ -9,6 +9,7 @@ This repository contains the Kubernetes manifests and Helm charts for a personal
 *   **MetalLB:** Provides a load-balancer implementation for bare-metal Kubernetes clusters, allowing services to receive external IP addresses.
 *   **Kube-vip:** Offers a highly available virtual IP for the Kubernetes control plane, ensuring API server accessibility.
 *   **cert-manager:** Automates the management and issuance of TLS certificates from sources like Let's Encrypt.
+*   **Longhorn:** A cloud-native distributed block storage system for Kubernetes.
 
 ## Directory Structure
 
@@ -18,7 +19,9 @@ The repository is organized by component within the `k8s` directory:
 k8s/
 ├── cert-manager/      # cert-manager configuration and installation
 ├── kube-vip/          # Kube-vip manifests for control plane high availability
+├── longhorn/          # Longhorn distributed block storage system configuration
 ├── metallb/           # MetalLB configuration for load balancing
+├── nfs/               # NFS PersistentVolume and PersistentVolumeClaim configurations
 ├── traefik/           # Traefik Ingress controller configuration
 └── vaultwarden/       # Helm chart for the Vaultwarden password manager
 ```
@@ -43,21 +46,19 @@ It is recommended to apply the configurations in the following order:
 
 ### 2. Deploying Helm Charts
 
-Applications like Vaultwarden are packaged as Helm charts. To deploy them, navigate to the chart's directory and use the `helm install` command.
+Applications like Vaultwarden are packaged as Helm charts. To deploy them, navigate to the chart's directory and use the `helm upgrade --install` command.
 
 **Example: Deploying Vaultwarden**
 
 To perform a dry run and review the generated manifests:
 ```bash
-helm template <release-name> k8s/vaultwarden --values k8s/vaultwarden/values.yaml --set env.ADMIN_TOKEN='your-secure-token'
+helm template vaultwarden k8s/vaultwarden -f k8s/vaultwarden/values.yaml -f k8s/vaultwarden/vaultwarden-secrets.yaml --namespace vaultwarden
 ```
 
 To deploy the chart to your cluster:
 ```bash
-helm install <release-name> k8s/vaultwarden --values k8s/vaultwarden/values.yaml --set env.ADMIN_TOKEN='your-secure-token'
+helm upgrade --install vaultwarden k8s/vaultwarden -f k8s/vaultwarden/values.yaml -f k8s/vaultwarden/vaultwarden-secrets.yaml --namespace vaultwarden --create-namespace
 ```
-
-Replace `<release-name>` with a name for your deployment (e.g., `my-vaultwarden`).
 
 ## Configuration
 

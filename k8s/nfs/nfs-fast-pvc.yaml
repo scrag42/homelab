@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-fast-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Ti # Adjust to the amount of storage your application needs
+  # Use an empty storageClassName to bind to a manually created PV
+  storageClassName: ""
+  # Optional: Uncomment and specify if you want to explicitly bind to the PV by name
+  # volumeName: nfs-fast-pv

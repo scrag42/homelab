@@ -1,0 +1,17 @@
+# NVME SSD NFS SHARE
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-fast-pv
+  labels:
+    type: nfs
+spec:
+  capacity:
+    storage: 2Ti
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany # Allows multiple pods to read/write
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 192.168.42.147
+    path: "/mnt/nfs_fast"
