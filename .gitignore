@@ -1,0 +1,3 @@
+
+# Vaultwarden secrets - DO NOT COMMIT
+k8s/vaultwarden/vaultwarden-secrets.yaml

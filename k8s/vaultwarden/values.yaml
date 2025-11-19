@@ -20,16 +20,17 @@ ingress:
         - path: /
           pathType: Prefix
   tls:
-   - secretName: vaultwarden-tls
+   - secretName: vaultwarden-cert-secret
      hosts:
        - bw.wheelerlab.dev
 
 persistence:
   enabled: true
   size: 1Gi
-  storageClassName: ""
-  accessMode: ReadWriteOnce
+  storageClassName: "longhorn-retain"
+  accessMode: ReadWriteMany
   mountPath: /data
 
 env:
+  # This Token will be overwritten by the one in the secrets.yaml
   ADMIN_TOKEN: ""
