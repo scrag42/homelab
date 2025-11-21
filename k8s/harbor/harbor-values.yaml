@@ -1,0 +1,41 @@
+expose:
+  type: ingress
+  tls:
+    enabled: true
+    certSource: secret
+    secret:
+      secretName: harbor-cert-secret # cert-manager will create this secret
+
+  ingress:
+    # Replace with your desired hostname
+    hosts:
+      core: harbor.wheelerlab.dev
+    
+    # This tells Kubernetes to use the Traefik ingress controller
+    className: "traefik"
+
+    # Annotations for Traefik and cert-manager
+    annotations:
+      # Use the Cloudflare ClusterIssuer to get a TLS certificate
+      cert-manager.io/cluster-issuer: "cloudflare-clusterissuer"
+      
+      # Traefik-specific annotations
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+
+# Update this to match your hostname
+externalURL: https://harbor.wheelerlab.dev
+
+persistence:
+  persistentVolumeClaim:
+    registry:
+      storageClass: "longhorn-retain"
+    jobservice:
+      jobLog:
+        storageClass: "longhorn-retain"
+    database:
+      storageClass: "longhorn-retain"
+    redis:
+      storageClass: "longhorn-retain"
+    trivy:
+      storageClass: "longhorn-retain"
