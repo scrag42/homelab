@@ -1,17 +1,17 @@
-# NVME SSD NFS SHARE
+# HDD NFS SHARE for bulk media storage
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-fast-pv
+  name: nfs-slow-pv
   labels:
     type: nfs
 spec:
   capacity:
-    storage: 2Ti
+    storage: 28T
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany # Allows multiple pods to read/write
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: 192.168.42.147
-    path: "/main/filebrowser"
+    server: 192.168.42.3
+    path: "/mnt/user/NetworkStorage"

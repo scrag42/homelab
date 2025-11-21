@@ -1,3 +1,6 @@
 
-# Vaultwarden secrets - DO NOT COMMIT
-k8s/vaultwarden/vaultwarden-secrets.yaml
+# Ignore all secret files - DO NOT COMMIT
+*-secrets.yaml
+
+# Ignore all .env files
+*.env

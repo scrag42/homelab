@@ -1,0 +1,7 @@
+version: "3"
+services:
+  bookKeeper:
+    image: book_keeper:0.0.1
+    env_file:
+      - .env
+    restart: always

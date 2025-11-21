@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-slow-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 28T # Adjust to the amount of storage your application needs
+  # Use an empty storageClassName to bind to a manually created PV
+  storageClassName: ""
+  # Use a selector to bind to the nfs-slow-pv
+  selector:
+    matchLabels:
+      type: nfs
