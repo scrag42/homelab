@@ -23,8 +23,15 @@ k8s/
 ├── metallb/           # MetalLB configuration for load balancing
 ├── nfs/               # NFS PersistentVolume and PersistentVolumeClaim configurations
 ├── traefik/           # Traefik Ingress controller configuration
+├── uptimekuma/        # Helm chart for the Uptime Kuma monitoring tool
 └── vaultwarden/       # Helm chart for the Vaultwarden password manager
 ```
+
+## Networking
+
+This homelab environment utilizes the `192.168.42.50-192.168.42.99` IP subnet for internal services, managed by MetalLB, to provide load balancing capabilities within the cluster. All external DNS resolution is handled through Cloudflare, which is also leveraged by cert-manager for DNS01 challenges to automate TLS certificate issuance.
+
+Traffic within the homelab is primarily routed via an internal DNS server, ensuring that all service access remains within the local network and is not exposed directly to the public internet.
 
 ## Prerequisites
 
