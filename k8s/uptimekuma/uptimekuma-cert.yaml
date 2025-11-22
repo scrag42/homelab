@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: uptimekuma-certificate
+  namespace: uptimekuma
+spec:
+  # Secret names are always required.
+  secretName: uptimekuma-cert-secret
+  issuerRef:
+    name: cloudflare-clusterissuer
+    kind: ClusterIssuer
+  dnsNames:
+    - uptime.wheelerlab.dev

@@ -1,0 +1,25 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "uptimekuma.fullname" . }}
+  labels:
+    {{- include "uptimekuma.labels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    {{- range .Values.ingress.hosts }}
+    - match: Host(`{{ .host }}`)
+      kind: Rule
+      services:
+        - name: {{ include "uptimekuma.fullname" $ }}
+          port: {{ $.Values.service.port }}
+    {{- end }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    secretName: {{ .secretName }}
+    {{- end }}
+{{- end }}

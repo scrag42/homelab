@@ -57,7 +57,7 @@ expose:
       #   group: gateway.networking.k8s.io
       #   kind: Gateway
     parentRefs: {}
-      # - "harbor.example.com"
+      # - "harbor.wheelerlab.dev"
     hosts: []
   clusterIP:
     # The name of ClusterIP service
