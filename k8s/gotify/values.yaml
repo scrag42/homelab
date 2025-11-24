@@ -1,0 +1,47 @@
+replicaCount: 1
+
+image:
+  repository: gotify/server
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+    cert-manager.io/cluster-issuer: "cloudflare-clusterissuer"
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  hosts:
+    - host: gotify.wheelerlab.dev
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+   - secretName: gotify-cert
+     hosts:
+       - gotify.wheelerlab.dev
+
+persistence:
+  enabled: true
+  size: 1Gi
+  mountPath: /app/data
+  accessMode: ReadWriteOnce
+  storageClassName: "longhorn-retain"
+
+gotify:
+  defaultUser:
+    password: "changeme"
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
