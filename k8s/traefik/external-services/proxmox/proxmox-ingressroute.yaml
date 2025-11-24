@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: proxmox-ingressroute
+  namespace: default # Or the namespace where your service resides
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`proxmox.wheelerlab.dev`)
+      kind: Rule
+      services:
+        - name: proxmox-external
+          port: 8006
+  tls:
+    secretName: proxmox-cert

@@ -17,7 +17,10 @@ The repository is organized by component within the `k8s` directory:
 
 ```
 k8s/
+├── book_keeper/       # Helm chart for the Book Keeper Discord application
 ├── cert-manager/      # cert-manager configuration and installation
+├── gotify/            # Helm chart for the Gotify push notification service
+├── harbor/            # Helm chart for the Harbor container registry
 ├── kube-vip/          # Kube-vip manifests for control plane high availability
 ├── longhorn/          # Longhorn distributed block storage system configuration
 ├── metallb/           # MetalLB configuration for load balancing
@@ -26,12 +29,6 @@ k8s/
 ├── uptimekuma/        # Helm chart for the Uptime Kuma monitoring tool
 └── vaultwarden/       # Helm chart for the Vaultwarden password manager
 ```
-
-## Networking
-
-This homelab environment utilizes the `192.168.42.50-192.168.42.99` IP subnet for internal services, managed by MetalLB, to provide load balancing capabilities within the cluster. All external DNS resolution is handled through Cloudflare, which is also leveraged by cert-manager for DNS01 challenges to automate TLS certificate issuance.
-
-Traffic within the homelab is primarily routed via an internal DNS server, ensuring that all service access remains within the local network and is not exposed directly to the public internet.
 
 ## Prerequisites
 
@@ -48,8 +45,9 @@ Before deploying applications, the core services must be running. This includes 
 It is recommended to apply the configurations in the following order:
 1.  `k8s/metallb/`
 2.  `k8s/kube-vip/`
-3.  `k8s/traefik/`
-4.  `k8s/cert-manager/`
+3.  `k8s/longhorn/`
+4.  `k8s/traefik/`
+5.  `k8s/cert-manager/`
 
 ### 2. Deploying Helm Charts
 

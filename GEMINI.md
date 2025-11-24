@@ -23,7 +23,7 @@ The `README.md` file recommends deploying the core services in the following ord
 3.  `k8s/traefik/`
 4.  `k8s/cert-manager/`
 
-Applications are deployed using Helm charts. For example, to deploy Vaultwarden:
+Applications are deployed using Helm charts. The general command for deploying a Helm chart is consistent across the project; therefore, specific deployment examples will only be provided in `README.md` for unique cases that deviate from the standard pattern. For example, to deploy Vaultwarden:
 
 ```bash
 helm upgrade --install vaultwarden k8s/vaultwarden -f k8s/vaultwarden/values.yaml -f k8s/vaultwarden/vaultwarden-secrets.yaml --namespace vaultwarden --create-namespace
