@@ -21,3 +21,9 @@ ports:
         to: websecure
         scheme: https
         permanent: true
+additionalArguments:
+  - "--entrypoints.websecure.proxyProtocol.trustedIPs=10.42.0.0/16,10.43.0.0/16,100.64.0.0/16"
+  - "--entrypoints.websecure.forwardedHeaders.trustedIPs=10.42.0.0/16,10.43.0.0/16,100.64.0.0/16"
+  - "--accesslog=true"
+  - "--accesslog.filepath=/dev/stdout"
+  - "--accesslog.format=json"

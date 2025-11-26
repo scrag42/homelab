@@ -1,0 +1,23 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "book-keeper.fullname" . }}
+  labels:
+    {{- include "book-keeper.labels" . | nindent 4 }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  {{- range .Values.ingress.hosts }}
+    - match: Host(`{{ .host }}`)
+      kind: Rule
+      services:
+        - name: {{ include "book-keeper.fullname" $ }}
+          port: {{ $.Values.service.port }}
+  {{- end }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    secretName: {{ (first .Values.ingress.tls).secretName }}
+  {{- end }}
+{{- end }}

@@ -25,6 +25,8 @@ spec:
           env:
             - name: GOTIFY_DEFAULTUSER_PASS
               value: {{ .Values.gotify.defaultUser.password }}
+            - name: GOTIFY_SERVER_TRUSTEDPROXIES
+              value: "10.42.0.0/16,10.43.0.0/16,100.64.0.0/16"
           livenessProbe:
             httpGet:
               path: /health

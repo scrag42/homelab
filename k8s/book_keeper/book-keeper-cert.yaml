@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: book-keeper-certificate
+  namespace: book-keeper
+spec:
+  secretName: book-keeper-cert
+  issuerRef:
+    name: cloudflare-clusterissuer
+    kind: ClusterIssuer
+  dnsNames:
+    - book-keeper.wheelerlab.dev

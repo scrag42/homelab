@@ -14,8 +14,7 @@ ingress:
   enabled: true
   className: "traefik"
   annotations:
-    cert-manager.io/cluster-issuer: "cloudflare-clusterissuer"
-    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
   hosts:
     - host: gotify.wheelerlab.dev
@@ -26,6 +25,10 @@ ingress:
    - secretName: gotify-cert
      hosts:
        - gotify.wheelerlab.dev
+
+env:
+  - name: GOTIFY_SERVER_TRUSTEDPROXIES
+    value: "10.42.0.0/16,10.43.0.0/16"
 
 persistence:
   enabled: true
