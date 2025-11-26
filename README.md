@@ -10,6 +10,7 @@ This repository contains the Kubernetes manifests and Helm charts for a personal
 *   **Kube-vip:** Offers a highly available virtual IP for the Kubernetes control plane, ensuring API server accessibility.
 *   **cert-manager:** Automates the management and issuance of TLS certificates from sources like Let's Encrypt.
 *   **Longhorn:** A cloud-native distributed block storage system for Kubernetes.
+*   **nfs-subdir-external-provisioner:** An automatic provisioner that uses your existing NFS server to back dynamic persistent volume claims.
 
 ## Directory Structure
 

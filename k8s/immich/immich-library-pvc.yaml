@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-library-pvc
+  namespace: immich
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-slow
+  resources:
+    requests:
+      storage: 28T # This should match the capacity of nfs-slow-pv.yaml
