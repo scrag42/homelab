@@ -1,0 +1,60 @@
+replicaCount: 1
+
+image:
+  repository: deluan/navidrome
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 4533
+
+ingress:
+  enabled: true
+  hosts:
+    - host: tunes.wheelerlab.dev
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+   - secretName: navidrome-cert
+     hosts:
+       - tunes.wheelerlab.dev
+
+persistence:
+  data:
+    enabled: true
+    size: 1Gi
+    mountPath: /data
+    accessMode: ReadWriteOnce
+    storageClassName: longhorn-retain
+  music:
+    enabled: true
+    size: 1Gi
+    mountPath: /music
+    accessMode: ReadOnlyMany
+    storageClassName: nfs-slow
+
+# Environment variables
+# https://www.navidrome.org/docs/usage/configuration-options/
+navidrome:
+  logLevel: "info"
+  enableTranscodingConfig: false
+  reverseProxyWhitelist: "172.24.0.2/32" # This might need to be adjusted for k8s
+
+user:
+  id: 1000
+  group: 1000
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi

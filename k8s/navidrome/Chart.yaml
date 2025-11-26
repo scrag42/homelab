@@ -1,0 +1,6 @@
+apiVersion: v2
+name: navidrome
+description: A Helm chart for Navidrome
+type: application
+version: 0.1.0
+appVersion: "0.49.3" # This is a recent version of Navidrome, can be updated by the user.

@@ -1,0 +1,35 @@
+{{- if .Values.persistence.data.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "navidrome.fullname" . }}-data
+  labels:
+    {{- include "navidrome.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.persistence.data.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.data.size | quote }}
+  {{- if .Values.persistence.data.storageClassName }}
+  storageClassName: {{ .Values.persistence.data.storageClassName }}
+  {{- end }}
+---
+{{- end }}
+{{- if .Values.persistence.music.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "navidrome.fullname" . }}-music
+  labels:
+    {{- include "navidrome.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.persistence.music.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.music.size | quote }}
+  {{- if .Values.persistence.music.storageClassName }}
+  storageClassName: {{ .Values.persistence.music.storageClassName }}
+  {{- end }}
+{{- end }}

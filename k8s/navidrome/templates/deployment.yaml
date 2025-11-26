@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "navidrome.fullname" . }}
+  labels:
+    {{- include "navidrome.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "navidrome.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "navidrome.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        runAsUser: {{ .Values.user.id }}
+        runAsGroup: {{ .Values.user.group }}
+        fsGroup: {{ .Values.user.group }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          env:
+            - name: ND_LOGLEVEL
+              value: {{ .Values.navidrome.logLevel | quote }}
+            - name: ND_ENABLETRANSCODINGCONFIG
+              value: {{ .Values.navidrome.enableTranscodingConfig | quote }}
+            - name: ND_REVERSEPROXYWHITELIST
+              value: {{ .Values.navidrome.reverseProxyWhitelist | quote }}
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.persistence.data.mountPath }}
+            - name: music
+              mountPath: {{ .Values.persistence.music.mountPath }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: data
+          {{- if .Values.persistence.data.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "navidrome.fullname" . }}-data
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: music
+          {{- if .Values.persistence.music.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "navidrome.fullname" . }}-music
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
